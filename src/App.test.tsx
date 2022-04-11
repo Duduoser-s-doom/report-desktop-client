@@ -8,6 +8,6 @@ describe("Test App component", () => {
   });
 
   test("Is Header render", () => {
-    expect(wrapper.find("#header").isEmptyRender()).toBe(false);
+    expect(!!wrapper.find("#header").get(0)).toBe(true);
   });
 });

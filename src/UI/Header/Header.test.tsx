@@ -1,19 +1,22 @@
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import { Header } from "./Header";
 
 describe("Test Header component", () => {
-  let wrapper = shallow(<Header />);
+  let wrapper = mount(<Header />);
   beforeEach(() => {
-    wrapper = shallow(<Header />);
+    wrapper = mount(<Header />);
   });
 
   test("Is header variant dark", () => {
-    expect(wrapper.find("#header").props()).toHaveProperty("variant", "dark");
+    expect(wrapper.find("#header").get(0).props).toHaveProperty("variant", "dark");
   });
   test("Is header bg primary", () => {
-    expect(wrapper.find("#header").props()).toHaveProperty("bg", "primary");
+    expect(wrapper.find("#header").get(0).props).toHaveProperty("bg", "success");
   });
   test("Is header has input", () => {
-    expect(wrapper.find("#search").isEmptyRender()).toBe(false);
+    expect(!!wrapper.find("#input-search").get(0)).toBe(true);
   });
+  test("Is fixed top", () => {
+    expect(wrapper.find("#header").get(0).props).toHaveProperty("fixed","top");
+  })
 });

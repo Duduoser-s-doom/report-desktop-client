@@ -12,7 +12,7 @@ describe("Test Header state", () => {
   test("Is getSearchText work", ()=>{
     const text = "header"  
     header.setSearchText(text)
-    expect(header.getSearchText()).toBe(text)
+    expect(header.getSearchText).toBe(text)
   })
   test("Is dates reset", ()=>{
     header.setSearchText("header")

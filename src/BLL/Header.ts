@@ -10,7 +10,7 @@ class Header {
         resetDates: action
     })
   }
-  getSearchText = (): string => {
+  get getSearchText (): string {
     return this.searchText;
   };
   setSearchText = (text: string): void => {

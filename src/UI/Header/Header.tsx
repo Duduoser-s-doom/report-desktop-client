@@ -1,18 +1,11 @@
-import { observer } from "mobx-react";
-import { memo } from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
+import { FormHeader } from "./FormHeader";
 
-export const Header = observer(
-  memo(() => {
-    const handleTextInputChange = (e: HTMLInputElement) =>{
-
-    }
-    return (
-      <Navbar id={"header"} variant={"dark"} bg={"primary"}>
-        <Nav>
-          <input id={"search"} />
-        </Nav>
-      </Navbar>
-    );
-  })
-);
+export const Header = () => {
+  return (
+    <Navbar id={"header"} fixed={"top"} variant={"dark"} bg={"success"}>
+      <Navbar.Brand className={"mx-2"}>Report Generator 1.0</Navbar.Brand>
+      <FormHeader />
+    </Navbar>
+  );
+};
