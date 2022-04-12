@@ -18,7 +18,6 @@ class Navigation {
     go(route: NavigationRoutes) {
         this.location = route
     }
-    createHref(){}
 }
 
 export const navigation = new Navigation()
