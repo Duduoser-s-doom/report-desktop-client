@@ -1,7 +1,7 @@
 import { Form, FormControl, Button } from "react-bootstrap";
 import { ChangeEvent, useCallback } from "react";
 import { observer } from "mobx-react";
-import { header } from "../../BLL/Header";
+import { header } from "../../BLL/Header/Header";
 
 export const FormHeader = observer(() => {
   const handleTextInputChange = useCallback(

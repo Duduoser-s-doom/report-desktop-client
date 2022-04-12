@@ -1,11 +1,13 @@
-import { Navbar } from "react-bootstrap";
-import { FormHeader } from "./FormHeader";
+import { Nav } from "react-bootstrap";
+import { NavigationRoutes } from "../../consts/navigation-routes";
+import { HeaderLink } from "./HeaderLink";
 
 export const Header = () => {
   return (
-    <Navbar id={"header"} fixed={"top"} variant={"dark"} bg={"success"}>
-      <Navbar.Brand className={"mx-2"}>Report Generator 1.0</Navbar.Brand>
-      <FormHeader />
-    </Navbar>
+    <Nav variant="tabs" className={"px-4"} defaultActiveKey="/home">
+      <HeaderLink path={NavigationRoutes.home} title={"Home"} />
+      <HeaderLink path={NavigationRoutes.reports} title={"Reports"} />
+      <HeaderLink path={NavigationRoutes.constructor} title={"Constructor"}/>
+    </Nav>
   );
 };
