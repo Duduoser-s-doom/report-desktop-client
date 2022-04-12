@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import { NavigationRoutes } from "../../consts/navigation-routes";
+import { NavigationRoutes } from "../../consts";
 import { Header } from "./Header";
 
 describe("Test Header component", () => {

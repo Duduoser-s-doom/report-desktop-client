@@ -1,10 +1,10 @@
-import { NavigationRoutes } from "../../consts/navigation-routes";
-import { Reports } from "../Reports/Reports";
+import { NavigationRoutes } from "../../consts";
+import { Reports } from "../Reports";
 import { Route } from "./Route";
 
-export const RootReducer = () => {
+export const RootRouter = () => {
   return (
-    <div>
+    <div id="root-reducer">
       <Route path={NavigationRoutes.home} render={() => <></>} />
       <Route path={NavigationRoutes.reports} render={() => <Reports />} />
       <Route path={NavigationRoutes.constructor} render={() => <></>} />

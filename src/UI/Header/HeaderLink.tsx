@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import { Nav } from "react-bootstrap";
-import { navigation } from "../../BLL/Navigation/Navigation";
+import { navigation } from "../../BLL/Navigation";
 import { NavigationRoutes } from "../../consts/navigation-routes";
 
 type Props = {

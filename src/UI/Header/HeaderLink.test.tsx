@@ -1,6 +1,6 @@
 import { shallow } from "enzyme";
-import { navigation } from "../../BLL/Navigation/Navigation";
-import { NavigationRoutes } from "../../consts/navigation-routes";
+import { navigation } from "../../BLL/Navigation";
+import { NavigationRoutes } from "../../consts";
 import { HeaderLink } from "./HeaderLink";
 
 describe("Test HeaderLink component", () => {
