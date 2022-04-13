@@ -9,13 +9,13 @@ export const Header = observer(() => {
     <Nav
       id="header"
       variant="tabs"
-      className={"px-4"}
+      className="px-4"
       defaultActiveKey={NavigationRoutes.home}
       activeKey={navigation.location}
     >
-      <HeaderLink path={NavigationRoutes.home} title={"Home"} />
-      <HeaderLink path={NavigationRoutes.reports} title={"Reports"} />
-      <HeaderLink path={NavigationRoutes.constructor} title={"Constructor"} />
+      <HeaderLink path={NavigationRoutes.home} title="Home" />
+      <HeaderLink path={NavigationRoutes.reports} title="Reports" />
+      <HeaderLink path={NavigationRoutes.constructor} title="Constructor" />
     </Nav>
   );
 });

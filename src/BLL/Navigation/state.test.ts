@@ -1,5 +1,5 @@
 import { NavigationRoutes } from "../../consts/navigation-routes";
-import { navigation } from "./Navigation";
+import { navigation } from "./state";
 
 describe("Test Navigation state", () => {
   beforeEach(() => {
