@@ -1,5 +1,7 @@
 import { shallow } from "enzyme";
+import { modal } from "../../BLL/Modal";
 import { ReportsInsertModal } from "./ReportsInsertModal";
+import file from "../../test-data/lab.ods"
 
 describe("Test ReportsInsertModal component", () => {
   let wrapper = shallow(<ReportsInsertModal />);
@@ -27,4 +29,12 @@ describe("Test ReportsInsertModal component", () => {
       wrapper.find("#report-insert-modal-body-input-group-label").text()
     ).toBe("Group");
   });
+  test("Is onHide modal work correct",()=>{
+    //@ts-ignore
+    wrapper.find("#reports-insert").props().onHide()
+    expect(modal.visible).toBe(false)
+  })
+  test("Is handleChangeFileInput work correct",()=>{
+
+  })
 });

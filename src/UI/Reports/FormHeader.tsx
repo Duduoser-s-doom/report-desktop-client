@@ -13,8 +13,7 @@ export const FormHeader = observer(() => {
     []
   );
   const handleSubmit = useCallback(() => {
-    //@ts-ignore
-    alert("hello");
+  
   },[]);
   const handleInsertButton = useCallback(() =>{
     modal.show(ModalRoutes.reportsInsert)

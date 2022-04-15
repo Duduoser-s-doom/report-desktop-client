@@ -7,3 +7,10 @@ export type Report = {
   pdf: any;
   reportId: string;
 };
+
+export type ReportRaw = {
+  labNumber: number;
+  name: string;
+  points: number;
+  githubURL: string;
+};

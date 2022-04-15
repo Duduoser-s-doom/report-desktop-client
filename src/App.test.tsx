@@ -10,7 +10,10 @@ describe("Test App component", () => {
   test("Is Header render", () => {
     expect(!!wrapper.find("#header")).toBe(true);
   });
-  test("Is RootReducer render", ()=>{
+  test("Is RootRouter render", ()=>{
     expect(!!wrapper.find("#root-reducer")).toBe(true)
+  })
+  test("Is RootModal render", ()=>{
+    expect(!!wrapper.find("#root-modal")).toBe(true)
   })
 });

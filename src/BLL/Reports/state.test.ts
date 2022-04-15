@@ -1,6 +1,6 @@
 import { reports } from "./state";
 import reportsExcel from "../../test-data/lab.ods";
-import readXlsxFile from "read-excel-file";
+import xlsx from "xlsx";
 
 describe("Test Reports state", () => {
   beforeEach(() => {
@@ -22,8 +22,6 @@ describe("Test Reports state", () => {
     expect(reports.group).toBe(group)
   })
   test("Is setReportsExcel work correct", async ()=>{
-    const data = await readXlsxFile(reportsExcel)
-    console.log(data);
     reports.setReportsExcel(reportsExcel)
     expect(reports.reports.excel).toBe(reportsExcel)
   })

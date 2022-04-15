@@ -1,9 +1,11 @@
 import { action, makeObservable, observable } from "mobx";
+import { ReportRaw } from "../../types"
 
 class Reports {
   searchText = "";
   group = "";
   reports = {
+    raw: ReportRaw[],
     excel: null as any,
     pdfs: [] as any,
     zip: null as any,
@@ -30,6 +32,7 @@ class Reports {
     this.searchText = "";
     this.group = "";
     this.reports = {
+      raw: [],
       excel: null as any,
       pdfs: [] as any,
       zip: null as any,

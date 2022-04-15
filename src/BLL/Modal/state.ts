@@ -6,15 +6,15 @@ class Modal {
   constructor() {
     makeAutoObservable(this);
   }
-  resetDates() {
+  resetDates = () => {
     this.visible = false;
-  }
-  show(route: ModalRoutes) {
+  };
+  show = (route: ModalRoutes) => {
     this.visible = route;
-  }
-  hide() {
+  };
+  hide = () => {
     this.visible = false;
-  }
+  };
 }
 
 export const modal = new Modal();
