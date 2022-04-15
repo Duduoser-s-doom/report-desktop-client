@@ -5,7 +5,7 @@ class Reports {
   searchText = "";
   group = "";
   reports = {
-    raw: ReportRaw[],
+    raw: [] as ReportRaw[],
     excel: null as any,
     pdfs: [] as any,
     zip: null as any,
