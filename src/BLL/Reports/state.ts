@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { ReportRaw } from "../../types"
 
 class Reports {
@@ -7,17 +7,11 @@ class Reports {
   reports = {
     raw: [] as ReportRaw[],
     excel: null as any,
-    pdfs: [] as any,
+    pdf: [] as any,
     zip: null as any,
   };
   constructor() {
-    makeObservable(this, {
-      searchText: observable,
-      group: observable,
-      reports: observable,
-      setSearchText: action,
-      resetDates: action,
-    });
+    makeAutoObservable(this)
   }
   setSearchText = (text: string): void => {
     this.searchText = text;
@@ -28,13 +22,16 @@ class Reports {
   setReportsExcel = (file: any): void => {
     this.reports.excel = file
   }
+  setReportsRaw = (reports: ReportRaw[]) => {
+    this.reports.raw = reports
+  }
   resetDates = (): void => {
     this.searchText = "";
     this.group = "";
     this.reports = {
       raw: [],
       excel: null as any,
-      pdfs: [] as any,
+      pdf: [] as any,
       zip: null as any,
     };
   };

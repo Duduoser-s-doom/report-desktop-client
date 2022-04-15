@@ -1,6 +1,8 @@
 import { reports } from "./state";
 import reportsExcel from "../../test-data/lab.ods";
 import xlsx from "xlsx";
+import { ReportRaw } from "../../types";
+import exp from "constants";
 
 describe("Test Reports state", () => {
   beforeEach(() => {
@@ -24,5 +26,10 @@ describe("Test Reports state", () => {
   test("Is setReportsExcel work correct", async ()=>{
     reports.setReportsExcel(reportsExcel)
     expect(reports.reports.excel).toBe(reportsExcel)
+  })
+  test("Is setReportsRaw work correct",()=>{
+    const reportsRaw = [{labNumber:1, name:"Daniel", points:7, githubURL:"https://github.io/XtereO"}] as ReportRaw[]
+    reports.setReportsRaw(reportsRaw)
+    expect(reports.reports.raw).toBe(reportsRaw)
   })
 });

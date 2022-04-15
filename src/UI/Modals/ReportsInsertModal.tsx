@@ -19,7 +19,7 @@ export const ReportsInsertModal = observer(() => {
     const file = e.target.files[0] as File;
     const data = await file.arrayBuffer();
     const workbook = read(data);
-    reports.setReportsExcel(file)
+    reports.setReportsExcel(file);
   };
 
   return (
@@ -33,11 +33,17 @@ export const ReportsInsertModal = observer(() => {
       </Modal.Header>
       <Modal.Body id="report-insert-modal-body">
         <Form.Group controlId="formFile" className="mb-3">
-          <Form.Label id="report-insert-modal-body-input-group-label">
+          <Form.Label
+            id="report-insert-modal-body-input-group-label"
+            htmlFor="report-insert-modal-body-input-group"
+          >
             Group
           </Form.Label>
           <Form.Control id="report-insert-modal-body-input-group" type="text" />
-          <Form.Label id="report-insert-modal-body-input-files-label">
+          <Form.Label
+            id="report-insert-modal-body-input-files"
+            htmlFor="report-insert-modal-body-input-files"
+          >
             Here should be excel file
           </Form.Label>
           <Form.Control

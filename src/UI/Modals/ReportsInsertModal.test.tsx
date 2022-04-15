@@ -35,6 +35,6 @@ describe("Test ReportsInsertModal component", () => {
     expect(modal.visible).toBe(false)
   })
   test("Is handleChangeFileInput work correct",()=>{
-
+    
   })
 });
