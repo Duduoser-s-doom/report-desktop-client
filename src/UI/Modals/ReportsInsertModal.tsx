@@ -19,6 +19,9 @@ export const ReportsInsertModal = observer(() => {
     const file = e.target.files[0] as File;
     const data = await file.arrayBuffer();
     const workbook = read(data);
+    console.log(workbook);
+    let reportsRaw = []
+    Object(workbook.Sheets).values
     reports.setReportsExcel(file);
   };
 
