@@ -1,5 +1,5 @@
-export const readExcel = (data: {sheets:object}) => {
-  return Object.keys(Object.values(data.sheets)).map((d, index) => readList(data, index));
+export const readExcel = (data: {Sheets:object}) => {
+  return Object.keys(Object.values(data.Sheets)).map((d, index) => readList(data, index));
 };
 
 export const readList = (data: object, lId: number) => {

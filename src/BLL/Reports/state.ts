@@ -1,5 +1,7 @@
 import { makeAutoObservable } from "mobx";
+import { read } from "xlsx";
 import { ReportRaw } from "../../types"
+import { excelToReportsRaw } from "../../utils";
 
 class Reports {
   searchText = "";
@@ -24,6 +26,12 @@ class Reports {
   }
   setReportsRaw = (reports: ReportRaw[]) => {
     this.reports.raw = reports
+  }
+  setReportsByExcelFile = async (file: any) =>{
+    const data = await file.arrayBuffer()
+    const workbook = read(data)
+    this.reports.excel = file
+    this.reports.raw = excelToReportsRaw(workbook)
   }
   resetDates = (): void => {
     this.searchText = "";

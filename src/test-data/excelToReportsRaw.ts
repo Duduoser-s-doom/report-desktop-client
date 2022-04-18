@@ -1,7 +1,7 @@
 import { ReportRaw } from "../types";
 
 export const testExcelData = {
-  sheets: {
+  Sheets: {
     l1: {
       A1: {v:"Name"},
       A2: {v:"Daniel"},
