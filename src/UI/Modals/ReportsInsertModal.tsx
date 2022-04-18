@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
-import { ChangeEvent } from "react";
-import { Form, Modal } from "react-bootstrap";
-import { read } from "xlsx";
+import { ChangeEvent, useMemo } from "react";
+import { Form, Modal, Button } from "react-bootstrap";
 import { modal } from "../../BLL/Modal";
 import { reports } from "../../BLL/Reports";
 import { ModalRoutes } from "../../consts/modal-routes";
@@ -10,14 +9,26 @@ export const ReportsInsertModal = observer(() => {
   const handleChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       if (e.target && e.target.files) {
-        await tryHandleChangeFileInput(e);
+        tryHandleChangeFileInput(e);
       }
     } catch (e) {}
   };
-  const tryHandleChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
+  const tryHandleChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
-    reports.setReportsByExcelFile(e.target.files[0])
+    reports.setReportsByExcelFile(e.target.files[0]);
   };
+  const isToPDFBtnDisabled = useMemo(
+    () => !(reports.reports.raw && reports.isFetching && reports.group),
+    [reports.isFetching, reports.group, reports.reports.raw]
+  );
+  const isDownloadBtnDisabled = useMemo(
+    () => !(reports.reports.zip && reports.isFetching),
+    [reports.reports.zip, reports.isFetching]
+  );
+  const isSaveBtnDisabled = useMemo(
+    () => !(reports.reports.pdf && reports.reports.raw && reports.isFetching),
+    [reports.reports.pdf, reports.reports.raw, reports.isFetching]
+  );
 
   return (
     <Modal
@@ -38,19 +49,49 @@ export const ReportsInsertModal = observer(() => {
           </Form.Label>
           <Form.Control id="report-insert-modal-body-input-group" type="text" />
           <Form.Label
-            id="report-insert-modal-body-input-files"
+            id="report-insert-modal-body-input-files-label"
             htmlFor="report-insert-modal-body-input-files"
           >
             Here should be excel file
           </Form.Label>
           <Form.Control
-            value={reports.reports.excel}
             onChange={handleChangeFileInput}
             id="report-insert-modal-body-input-files"
             type="file"
           />
         </Form.Group>
       </Modal.Body>
+      <Modal.Footer>
+        <Form.Group
+          className="d-flex justify-content-end"
+          controlId="btnsFormFile"
+        >
+          <Button
+            disabled={isToPDFBtnDisabled}
+            variant="outline-warning"
+            id="report-insert-modal-footer-btn-to-pdf"
+            className="me-2"
+          >
+            To PDF
+          </Button>
+          <Button
+            disabled={isDownloadBtnDisabled}
+            variant="outline-success"
+            id="report-insert-modal-footer-btn-download"
+            className="me-2"
+          >
+            Download
+          </Button>
+          <Button
+            disabled={isSaveBtnDisabled}
+            variant="outline-success"
+            id="report-insert-modal-footer-btn-save"
+            className="me-2"
+          >
+            Save
+          </Button>
+        </Form.Group>
+      </Modal.Footer>
     </Modal>
   );
 });

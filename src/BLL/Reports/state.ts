@@ -6,9 +6,10 @@ import { excelToReportsRaw } from "../../utils";
 class Reports {
   searchText = "";
   group = "";
+  isFetching = false;
   reports = {
     raw: [] as ReportRaw[],
-    excel: null as any,
+    excel: null as File | null,
     pdf: [] as any,
     zip: null as any,
   };
@@ -27,11 +28,13 @@ class Reports {
   setReportsRaw = (reports: ReportRaw[]) => {
     this.reports.raw = reports
   }
-  setReportsByExcelFile = async (file: any) =>{
+  setReportsByExcelFile = async (file: File) =>{
+    this.isFetching = true
     const data = await file.arrayBuffer()
     const workbook = read(data)
     this.reports.excel = file
     this.reports.raw = excelToReportsRaw(workbook)
+    this.isFetching = false
   }
   resetDates = (): void => {
     this.searchText = "";
