@@ -4,6 +4,7 @@ import { Form, Modal, Button } from "react-bootstrap";
 import { modal } from "../../BLL/Modal";
 import { reports } from "../../BLL/Reports";
 import { ModalRoutes } from "../../consts/modal-routes";
+import {saveAs} from "file-saver"
 
 export const ReportsInsertModal = observer(() => {
   const handleChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -13,20 +14,31 @@ export const ReportsInsertModal = observer(() => {
       }
     } catch (e) {}
   };
+  const handleToPDFButton = () =>{
+    reports.generatePDFAndZipFiles()
+  }
+  const handleDownloadButton = () =>{
+    console.log(reports.reports.zip);
+    
+    saveAs(reports.reports.zip,"Reports.zip")
+  }
   const tryHandleChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
     reports.setReportsByExcelFile(e.target.files[0]);
   };
+  const handleChangeGroupInput = (e: ChangeEvent<HTMLInputElement>) => {
+    reports.setGroup(e.target.value);
+  };
   const isToPDFBtnDisabled = useMemo(
-    () => !(reports.reports.raw && reports.isFetching && reports.group),
+    () => !(reports.reports.raw && !reports.isFetching && reports.group),
     [reports.isFetching, reports.group, reports.reports.raw]
   );
   const isDownloadBtnDisabled = useMemo(
-    () => !(reports.reports.zip && reports.isFetching),
+    () => !(reports.reports.zip && !reports.isFetching),
     [reports.reports.zip, reports.isFetching]
   );
   const isSaveBtnDisabled = useMemo(
-    () => !(reports.reports.pdf && reports.reports.raw && reports.isFetching),
+    () => !(reports.reports.pdf && reports.reports.raw && !reports.isFetching),
     [reports.reports.pdf, reports.reports.raw, reports.isFetching]
   );
 
@@ -47,7 +59,12 @@ export const ReportsInsertModal = observer(() => {
           >
             Group
           </Form.Label>
-          <Form.Control id="report-insert-modal-body-input-group" type="text" />
+          <Form.Control
+            onChange={handleChangeGroupInput}
+            value={reports.group}
+            id="report-insert-modal-body-input-group"
+            type="text"
+          />
           <Form.Label
             id="report-insert-modal-body-input-files-label"
             htmlFor="report-insert-modal-body-input-files"
@@ -67,6 +84,7 @@ export const ReportsInsertModal = observer(() => {
           controlId="btnsFormFile"
         >
           <Button
+            onClick={handleToPDFButton}
             disabled={isToPDFBtnDisabled}
             variant="outline-warning"
             id="report-insert-modal-footer-btn-to-pdf"
@@ -75,6 +93,7 @@ export const ReportsInsertModal = observer(() => {
             To PDF
           </Button>
           <Button
+            onClick={handleDownloadButton}
             disabled={isDownloadBtnDisabled}
             variant="outline-success"
             id="report-insert-modal-footer-btn-download"
