@@ -18,9 +18,7 @@ export const ReportsInsertModal = observer(() => {
     reports.generatePDFAndZipFiles()
   }
   const handleDownloadButton = () =>{
-    console.log(reports.reports.zip);
-    
-    saveAs(reports.reports.zip,"Reports.zip")
+    saveAs(reports.reports.zip,"Reports")
   }
   const tryHandleChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
@@ -57,7 +55,7 @@ export const ReportsInsertModal = observer(() => {
             id="report-insert-modal-body-input-group-label"
             htmlFor="report-insert-modal-body-input-group"
           >
-            Group
+            Group{reports.reports.pdf.map((p:{base64:string})=>p.base64)}
           </Form.Label>
           <Form.Control
             onChange={handleChangeGroupInput}
