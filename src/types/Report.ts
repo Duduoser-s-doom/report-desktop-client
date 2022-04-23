@@ -4,7 +4,7 @@ export type Report = {
   name: string;
   points: number;
   githubURL: string;
-  pdf: any;
+  pdf: PdfFile;
   reportId: string;
 };
 
@@ -13,4 +13,17 @@ export type ReportRaw = {
   name: string;
   points: number;
   githubURL: string;
+};
+
+export type ReportCreateModel = {
+  labNumber: number;
+  name: string;
+  points: number;
+  githubURL: string;
+  pdf: PdfFile;
+};
+
+type PdfFile = {
+  name: string;
+  base64: string;
 };

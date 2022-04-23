@@ -16,6 +16,7 @@
     "@types/react-dom": "^18.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
     "@zarconontol/enzyme-adapter-react-18": "^0.7.3",
+    "axios": "^0.26.1",
     "bootstrap": "^5.1.3",
     "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
