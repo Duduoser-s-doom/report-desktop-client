@@ -54,7 +54,7 @@ class Reports {
         reader.readAsDataURL(doc.output("blob"));
         reader.onload = async () => {
           const base64 = (reader.result as string).split(",")[1];
-          const name = `Report-${r.name}${r.labNumber}.pdf`;
+          const name = `Report-${this.group}-${r.name}${r.labNumber}.pdf`;
           pdfFiles.push({ name, base64 });
           folder?.file(name, base64, { base64: true });
         };

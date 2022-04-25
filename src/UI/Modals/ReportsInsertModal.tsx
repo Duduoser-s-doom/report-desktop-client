@@ -55,7 +55,7 @@ export const ReportsInsertModal = observer(() => {
             id="report-insert-modal-body-input-group-label"
             htmlFor="report-insert-modal-body-input-group"
           >
-            Group{reports.reports.pdf.map((p:{base64:string})=>p.base64)}
+            Group
           </Form.Label>
           <Form.Control
             onChange={handleChangeGroupInput}

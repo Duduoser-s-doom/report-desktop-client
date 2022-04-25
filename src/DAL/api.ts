@@ -5,13 +5,13 @@ const instance = axios.create({
   baseURL: BACKEND_URL,
 });
 
-export const getReports = (
+export const getReports = async (
   group: string,
   name: string = "",
   page = 1,
   count = 10
-): Report[] => {
-  return [
+) => {
+  return await [
     {
       group: "R3180",
       name: "Daniel",
@@ -21,7 +21,7 @@ export const getReports = (
       pdf: { base64: "none", name: "R3180-Daniel-lab1.pdf" },
       reportId: String(new Date().getTime()),
     },
-  ];
+  ] as Report[];
 };
 
 export const createReports = (
