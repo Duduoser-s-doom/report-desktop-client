@@ -62,6 +62,9 @@ class Reports {
   setReportsExcel = (file: any): void => {
     this.reports.excel = file;
   };
+  setSelectedReports = (reports: Report[]) => {
+    this.reports.selected = reports
+  }
   setReportsRaw = (reports: ReportRaw[]) => {
     this.reports.raw = reports;
   };

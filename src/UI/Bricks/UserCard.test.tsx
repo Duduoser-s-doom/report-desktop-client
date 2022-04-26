@@ -1,4 +1,5 @@
 import { shallow } from "enzyme";
+import { reports } from "../../BLL/Reports";
 import { report } from "../../test-data/report";
 import { UserCard } from "./UserCard";
 
@@ -53,6 +54,14 @@ describe("Test UserCell component", () => {
       wrapper.find(`#card-buttons${report.reportId}`).props()
     ).toHaveProperty("xs", 4);
   });
+  test("Is points-column render", () => {
+    expect(!!wrapper.find(`#card-points${report.reportId}`)).toBe(true);
+  });
+  test("Has points-column got xs=1", () => {
+    expect(
+      wrapper.find(`#card-points${report.reportId}`).props()
+    ).toHaveProperty("xs", 1);
+  });
   test("Is button for delete exist", () => {
     expect(!!wrapper.find(`#card-btn-delete${report.reportId}`)).toBe(true);
   });
@@ -70,21 +79,10 @@ describe("Test UserCell component", () => {
   test("Has btn for download got success-outline variant", () => {
     expect(
       wrapper.find(`#card-btn-download${report.reportId}`).props()
-    ).toHaveProperty("variant", "success-outline");
+    ).toHaveProperty("variant", "outline-success");
   });
   test("Is Donwload icon exist", () => {
     expect(!!wrapper.find(".bi-download")).toBe(true);
-  });
-  test("Is button for change exist", () => {
-    expect(!!wrapper.find(`#card-btn-change${report.reportId}`)).toBe(true);
-  });
-  test("Has btn for change got warning-outline variant", () => {
-    expect(
-      wrapper.find(`#card-btn-change${report.reportId}`).props()
-    ).toHaveProperty("variant", "warning-outline");
-  });
-  test("Is Donwload icon exist", () => {
-    expect(!!wrapper.find(".bi-pencil")).toBe(true);
   });
   test("Is card-checkbox exist", () => {
     expect(!!wrapper.find(`#card-checkbox${report.reportId}`)).toBe(true);
@@ -93,5 +91,11 @@ describe("Test UserCell component", () => {
     expect(
       wrapper.find(`#card-checkbox${report.reportId}`).props()
     ).toHaveProperty("type", "checkbox");
+  });
+  test("Is handleCheckbox work", () => {
+    wrapper.find(`#card-checkbox${report.reportId}`).simulate("click");
+    expect(
+      reports.reports.selected.some((s) => s.reportId === report.reportId)
+    ).toBe(true);
   });
 });

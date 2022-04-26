@@ -12,12 +12,13 @@ export const FormHeader = observer(() => {
     },
     []
   );
-  const handleSubmit = useCallback(() => {
-  
-  },[]);
-  const handleInsertButton = useCallback(() =>{
-    modal.show(ModalRoutes.reportsInsert)
-  },[])
+  const handleSubmit = useCallback(() => {}, []);
+  const handleInsertButton = useCallback(() => {
+    modal.show(ModalRoutes.reportsInsert);
+  }, []);
+  const handleEditButton = useCallback(() => {
+    modal.show(ModalRoutes.reportsEdit);
+  }, []);
   return (
     <Form
       onSubmit={handleSubmit}
@@ -49,6 +50,14 @@ export const FormHeader = observer(() => {
         onClick={handleInsertButton}
       >
         Insert
+      </Button>
+      <Button
+        disabled={!(reports.reports.selected.length > 0)}
+        id="btn-edit"
+        variant="outline-warning"
+        onClick={handleEditButton}
+      >
+        <i className="bi bi-pencil"></i>
       </Button>
     </Form>
   );

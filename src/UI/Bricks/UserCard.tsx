@@ -1,8 +1,17 @@
 import { observer } from "mobx-react";
+import { ChangeEvent } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { reports } from "../../BLL/Reports";
 import { Report } from "../../types";
 
 export const UserCard = observer((props: Report) => {
+  const handleCheckbox = (e:ChangeEvent<HTMLInputElement>) =>{
+    if(e.currentTarget.checked){
+      reports.setSelectedReports([...reports.reports.selected, props])
+    }else{
+      reports.setSelectedReports(reports.reports.selected.filter(s=>s.reportId!==props.reportId))
+    }
+  }
   return (
     <Card id={`card-user${props.reportId}`}>
       <Card.Body id={`card-body${props.reportId}`}>
@@ -16,7 +25,10 @@ export const UserCard = observer((props: Report) => {
           <Col id={`card-labNumber${props.reportId}`} xs={1}>
             {props.labNumber}
           </Col>
-          <Col className="d-flex justify-content-end" id={`card-buttons${props.reportId}`} xs={4}>
+          <Col id={`card-points${props.reportId}`} xs={1}>
+            {props.points}
+          </Col>
+          <Col className="d-flex justify-content-end" id={`card-buttons${props.reportId}`} xs={3}>
             <Button
               id={`card-btn-delete${props.reportId}`}
               variant="outline-danger"
@@ -29,14 +41,12 @@ export const UserCard = observer((props: Report) => {
             >
               <i className="bi bi-download"></i>
             </Button>
-            <Button
-              id={`card-btn-change${props.reportId}`}
-              variant="outline-warning"
-            >
-              <i className="bi bi-pencil"></i>
-            </Button>
-            <Form.Check className="mt-1 mx-1"
-            id={`card-checkbox${props.reportId}`} type="checkbox"/>
+            <Form.Check
+            type="checkbox"
+            checked={reports.reports.selected.some(s=>s.reportId===props.reportId)}
+            onChange={handleCheckbox}
+            className="mt-1 mx-1"
+            id={`card-checkbox${props.reportId}`}/>
           </Col>
         </Row>
       </Card.Body>

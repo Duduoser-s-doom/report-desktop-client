@@ -40,4 +40,17 @@ describe("Test FormHeader Component", () => {
     wrapper.find("#btn-insert").simulate("click");
     expect(modal.visible).toBe(ModalRoutes.reportsInsert);
   });
+  test("Is button for edit open modal", ()=>{
+    wrapper.find("#btn-edit").simulate("click")
+    expect(modal.visible).toBe(ModalRoutes.reportsEdit)
+  })
+  test("Is button for edit exist", () => {
+    expect(!!wrapper.find("#btn-edit")).toBe(true);
+  });
+  test("Has button for edit got outline-warning variant", () => {
+    expect(wrapper.find("#btn-edit").props()).toHaveProperty(
+      "variant",
+      "outline-warning"
+    );
+  });
 });

@@ -1,9 +1,7 @@
 import { reports } from "./state";
 import reportsExcel from "../../test-data/lab.ods";
-import xlsx, { read } from "xlsx";
 import { ReportRaw } from "../../types";
-import exp from "constants";
-import { excelToReportsRaw } from "../../utils";
+import { report } from "../../test-data/report";
 
 describe("Test Reports state", () => {
   beforeEach(() => {
@@ -38,7 +36,7 @@ describe("Test Reports state", () => {
       },
     ] as ReportRaw[];
     reports.setReportsRaw(reportsRaw);
-    expect(reports.reports.raw).toBe(reportsRaw);
+    expect(reports.reports.raw).toStrictEqual(reportsRaw);
   });
   test("Is setReportsByExcelFile work correct", async () => {
     await reports.setReportsByExcelFile(reportsExcel);
@@ -62,4 +60,8 @@ describe("Test Reports state", () => {
       zip: null,
     });
   });
+  test("Is setSelectedReports work correct", ()=>{
+    reports.setSelectedReports([report])
+    expect(reports.reports.selected).toStrictEqual([report])
+  })
 });
