@@ -23,6 +23,14 @@ export type ReportCreateModel = {
   pdf: PdfFile;
 };
 
+export type ReportChangeModel = {
+  group?: string;
+  labNumber?: number;
+  name?: string;
+  points?: number;
+  githubURL?: string;
+}
+
 type PdfFile = {
   name: string;
   base64: string;

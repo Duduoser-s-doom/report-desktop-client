@@ -11,7 +11,7 @@ export const getReports = async (
   page = 1,
   count = 10
 ) => {
-  return await [
+  return (await [
     {
       group: "R3180",
       name: "Daniel",
@@ -21,7 +21,7 @@ export const getReports = async (
       pdf: { base64: "none", name: "R3180-Daniel-lab1.pdf" },
       reportId: String(new Date().getTime()),
     },
-  ] as Report[];
+  ]) as Report[];
 };
 
 export const createReports = (
@@ -29,4 +29,6 @@ export const createReports = (
   group: string
 ) => {};
 
-export const setReports = (reports: Report[], group: string = "") => {};
+export const setReports = async (reports: Report[]) => {};
+
+export const deleteReports = async (reportId: string) => {};
