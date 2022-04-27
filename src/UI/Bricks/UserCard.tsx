@@ -1,17 +1,22 @@
+import { saveAs } from "file-saver";
 import { observer } from "mobx-react";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { reports } from "../../BLL/Reports";
 import { Report } from "../../types";
+import { base64ToBlob } from "../../utils";
 
 export const UserCard = observer((props: Report) => {
-  const handleCheckbox = (e:ChangeEvent<HTMLInputElement>) =>{
+  const handleCheckbox = useCallback((e:ChangeEvent<HTMLInputElement>) =>{
     if(e.currentTarget.checked){
       reports.setSelectedReports([...reports.reports.selected, props])
     }else{
       reports.setSelectedReports(reports.reports.selected.filter(s=>s.reportId!==props.reportId))
     }
-  }
+  },[props,reports.reports.selected])
+  const handleDownloadButton = useCallback(()=>{
+    saveAs(base64ToBlob(props.pdf.base64,"application/pdf"),props.pdf.name)
+  },[])
   return (
     <Card id={`card-user${props.reportId}`}>
       <Card.Body id={`card-body${props.reportId}`}>
@@ -30,12 +35,7 @@ export const UserCard = observer((props: Report) => {
           </Col>
           <Col className="d-flex justify-content-end" id={`card-buttons${props.reportId}`} xs={3}>
             <Button
-              id={`card-btn-delete${props.reportId}`}
-              variant="outline-danger"
-            >
-              <i className="bi bi-trash"></i>
-            </Button>
-            <Button
+              onClick={handleDownloadButton}
               id={`card-btn-download${props.reportId}`}
               variant="outline-success"
             >

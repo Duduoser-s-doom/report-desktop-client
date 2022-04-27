@@ -53,4 +53,13 @@ describe("Test FormHeader Component", () => {
       "outline-warning"
     );
   });
+  test("Is button for delete exist", () => {
+    expect(!!wrapper.find("#btn-delete")).toBe(true);
+  });
+  test("Has button for edit got outline-danger variant", () => {
+    expect(wrapper.find("#btn-delete").props()).toHaveProperty(
+      "variant",
+      "outline-danger"
+    );
+  });
 });

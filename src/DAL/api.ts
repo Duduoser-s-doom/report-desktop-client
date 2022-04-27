@@ -1,5 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../consts";
+import { report } from "../test-data/report";
 import { Report, ReportCreateModel } from "../types";
 const instance = axios.create({
   baseURL: BACKEND_URL,
@@ -11,17 +12,7 @@ export const getReports = async (
   page = 1,
   count = 10
 ) => {
-  return (await [
-    {
-      group: "R3180",
-      name: "Daniel",
-      labNumber: 1,
-      points: 10,
-      githubURL: "https://xtereo.github.io/lab1",
-      pdf: { base64: "none", name: "R3180-Daniel-lab1.pdf" },
-      reportId: String(new Date().getTime()),
-    },
-  ]) as Report[];
+  return (await [report]) as Report[];
 };
 
 export const createReports = (
@@ -31,4 +22,4 @@ export const createReports = (
 
 export const setReports = async (reports: Report[]) => {};
 
-export const deleteReports = async (reportId: string) => {};
+export const deleteReports = async (reportsId: string[]) => {};

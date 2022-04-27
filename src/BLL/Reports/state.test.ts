@@ -64,4 +64,8 @@ describe("Test Reports state", () => {
     reports.setSelectedReports([report])
     expect(reports.reports.selected).toStrictEqual([report])
   })
+  test("Is setPage work correct", ()=>{
+    reports.setPage(2)
+    expect(reports.page).toBe(2)
+  })
 });

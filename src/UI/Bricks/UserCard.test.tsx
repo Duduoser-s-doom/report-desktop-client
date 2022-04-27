@@ -62,17 +62,6 @@ describe("Test UserCell component", () => {
       wrapper.find(`#card-points${report.reportId}`).props()
     ).toHaveProperty("xs", 1);
   });
-  test("Is button for delete exist", () => {
-    expect(!!wrapper.find(`#card-btn-delete${report.reportId}`)).toBe(true);
-  });
-  test("Has btn for delete got danger-outline variant", () => {
-    expect(
-      wrapper.find(`#card-btn-delete${report.reportId}`).props()
-    ).toHaveProperty("variant", "danger-outline");
-  });
-  test("Is Trash icon exist", () => {
-    expect(!!wrapper.find(".bi-trash")).toBe(true);
-  });
   test("Is button for download exist", () => {
     expect(!!wrapper.find(`#card-btn-download${report.reportId}`)).toBe(true);
   });

@@ -3,13 +3,13 @@ import { read } from "xlsx";
 import { Report, ReportChangeModel, ReportRaw } from "../../types";
 import { excelToReportsRaw, generatePDFByReports } from "../../utils";
 import Zip from "jszip";
-import { getReports, setReports } from "../../DAL";
+import { deleteReports, getReports, setReports } from "../../DAL";
 
 class Reports {
   searchText = "";
   group = "";
   isFetchingReports = false;
-  isFetching = false
+  isFetching = false;
   page = 1;
   reports = {
     selected: [] as Report[],
@@ -22,9 +22,15 @@ class Reports {
   constructor() {
     makeAutoObservable(this);
   }
-
-  changeReports = async (reportChanges: ReportChangeModel) => {
-    this.isFetching = true
+  deleteAndFetchReports = async () => {
+    this.isFetching = true;
+    await deleteReports(reports.reports.selected.map((r) => r.reportId));
+    this.setSelectedReports([]);
+    this.isFetching = false;
+    this.fetchReports();
+  };
+  changeAndSaveReports = async (reportChanges: ReportChangeModel) => {
+    this.isFetching = true;
     Object.keys(reportChanges).forEach((r: string) =>
       this.reports.selected.forEach(
         (s: Report) =>
@@ -33,16 +39,16 @@ class Reports {
             reportChanges[r as keyof ReportChangeModel])
       )
     );
-    const pdfFiles = await generatePDFByReports(this.reports.selected, this.group)
-    this.reports.selected.forEach((s,index)=>s.pdf = pdfFiles[index])
-    this.isFetching = false
+    const pdfFiles = await generatePDFByReports(
+      this.reports.selected,
+      this.group
+    );
+    this.reports.selected.forEach((s, index) => (s.pdf = pdfFiles[index]));
+    await setReports(this.reports.selected);
+    this.setSelectedReports([]);
+    this.isFetching = false;
+    this.fetchReports();
   };
-  changeAndSaveReports = async (reportChanges: ReportChangeModel) =>{
-    this.changeReports(reportChanges)
-    this.isFetching = true
-    await setReports(this.reports.selected)
-    this.isFetching = false
-  }
   fetchReports = async () => {
     this.isFetchingReports = true;
     const reports = await getReports(
@@ -52,6 +58,9 @@ class Reports {
     );
     this.reports.fromSearch = reports;
     this.isFetchingReports = false;
+  };
+  setPage = (page: number) => {
+    this.page = page;
   };
   setSearchText = (text: string): void => {
     this.searchText = text;
@@ -63,8 +72,8 @@ class Reports {
     this.reports.excel = file;
   };
   setSelectedReports = (reports: Report[]) => {
-    this.reports.selected = reports
-  }
+    this.reports.selected = reports;
+  };
   setReportsRaw = (reports: ReportRaw[]) => {
     this.reports.raw = reports;
   };
@@ -79,8 +88,10 @@ class Reports {
   generatePDFAndZipFiles = async () => {
     let zip = new Zip();
     const folder = zip.folder("Reports");
-    const pdfFiles = await generatePDFByReports(this.reports.raw, this.group, (name, base64) =>
-      folder?.file(name, base64, { base64: true })
+    const pdfFiles = await generatePDFByReports(
+      this.reports.raw,
+      this.group,
+      (name, base64) => folder?.file(name, base64, { base64: true })
     );
     try {
       const zipFile = await zip?.generateAsync({ type: "blob" });
