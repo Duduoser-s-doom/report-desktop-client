@@ -3,6 +3,7 @@ import { Element } from "../../types";
 
 class Constructor {
   elements = [] as Element[];
+  selectedElement = null as null | Element
   constructor() {
     makeAutoObservable(this);
   }
@@ -17,7 +18,16 @@ class Constructor {
       e.id === element.id ? element : e
     );
   };
-  resetDates = () => {};
+  setSelectedElement=(element:Element)=>{
+    this.selectedElement = element
+  }
+  resetSelectedElement = () =>{
+    this.selectedElement = null
+  }
+  resetDates = () => {
+    this.elements = []
+    this.selectedElement = null
+  };
 }
 
 export const constructor = new Constructor();

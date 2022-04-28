@@ -14,9 +14,18 @@ describe("Test Constructor state", () => {
     constructor.removeElementById(element.id);
     expect(constructor.elements).toStrictEqual([]);
   });
-  test("Is editElement work correct", ()=>{
-    constructor.addElement(element)
-    constructor.editElement({...element,text: "New text"})
-    expect(constructor.elements[0].text).toBe("New text")
-  })
+  test("Is editElement work correct", () => {
+    constructor.addElement(element);
+    constructor.editElement({ ...element, text: "New text" });
+    expect(constructor.elements[0].text).toBe("New text");
+  });
+  test("Is setSelectedElement set selectedElement element", () => {
+    constructor.setSelectedElement(element);
+    expect(constructor.selectedElement).toStrictEqual(element);
+  });
+  test("Is resetSelectedElement set selectedElement null", () => {
+    constructor.setSelectedElement(element);
+    constructor.resetSelectedElement();
+    expect(constructor.selectedElement).toEqual(null);
+  });
 });
