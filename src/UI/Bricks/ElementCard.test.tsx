@@ -7,7 +7,7 @@ describe("Test ElementCard component", () => {
   const props = {
     left: 20,
     top: 50,
-    image: null,
+    imgSrc: null,
     text: "Element card",
     fontSize: 16,
     id: 1,

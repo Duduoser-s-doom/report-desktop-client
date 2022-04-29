@@ -27,4 +27,10 @@ describe("Test Sandbox component", () => {
       "relative"
     );
   });
+  test("Is overflow hidden", () => {
+    expect(wrapper.find("#sandbox").props().style).toHaveProperty(
+      "overflow",
+      "hidden"
+    );
+  });
 });

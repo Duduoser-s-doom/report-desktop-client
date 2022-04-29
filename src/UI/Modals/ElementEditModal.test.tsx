@@ -74,7 +74,7 @@ describe("Test ElementEditModal component", () => {
   });
   test("Is label for element-edit-input-image has text Font size", () => {
     expect(wrapper.find("#element-edit-label-image").isEmptyRender()).toBe(
-      "Image in format png"
+      "New image in format png"
     );
   });
   test("Is input for image rendered", () => {

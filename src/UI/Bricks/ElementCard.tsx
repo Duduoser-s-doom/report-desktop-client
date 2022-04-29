@@ -1,17 +1,18 @@
 import { observer } from "mobx-react";
 import { ChangeEvent, useCallback } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { constructor } from "../../BLL/Constructor";
 import { Element } from "../../types";
 
+const delay = (t:number) => new Promise((resolve)=>setTimeout(resolve,t))
 export const ElementCard = observer(
-  ({ id, image, text, left, top, fontSize }: Element) => {
+  ({ id, imgSrc, text, left, top, fontSize }: Element) => {
     const handleClickCard = useCallback(() => {
       constructor.setSelectedElementById(id);
     }, [id]);
-    const handleBlur = () => {
-      constructor.resetSelectedElement();
-      if (text === "" && image === null) {
+    const handleSubmit = async() => {
+      constructor.resetSelectedElement()
+      if (text === "" && imgSrc === null) {
         constructor.removeElementById(id);
       }
     };
@@ -19,33 +20,33 @@ export const ElementCard = observer(
       (e: ChangeEvent<HTMLInputElement>) => {
         constructor.editElement({
           id,
-          image,
+          imgSrc,
           left,
           top,
           fontSize,
           text: e.currentTarget.value,
         });
+        constructor.setSelectedElementById(id)
       },
-      [id, image, left, top, fontSize]
+      [id, imgSrc, left, top, fontSize]
     );
     return (
       <div
         onClick={handleClickCard}
         id={`element-card${id}`}
-        style={{ padding: 5, left, top, fontSize, position: "absolute" }}
+        style={{ left, top, fontSize, position: "absolute" }}
       >
-        {image ? (
-          <img src={""} />
+        {imgSrc ? (
+          <img style={constructor.selectedElement?.id === id ? {borderRadius:10, boxShadow:"0 0 10px #0D6EFD"} : {}} src={imgSrc} />
         ) : constructor.selectedElement?.id === id ? (
-          <Form.Group className="d-flex" id={`edit-mode${id}`}>
+          <Form onSubmit={handleSubmit} className="d-flex" id={`edit-mode${id}`}>
             <Form.Control
               style={{ width: "auto" }}
               onChange={handleChangeInput}
               value={text}
               autoFocus={true}
-              onBlur={handleBlur}
             />
-          </Form.Group>
+          </Form>
         ) : (
           text
         )}

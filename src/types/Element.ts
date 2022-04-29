@@ -1,7 +1,7 @@
 export type Element = {
   left: number;
   top: number;
-  image: ImageData | null;
+  imgSrc: string | null;
   text: string;
   fontSize: number;
   id: number

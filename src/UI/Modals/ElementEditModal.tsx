@@ -18,12 +18,22 @@ export const ElementEditModal = observer(() => {
         Edit element
       </Modal.Header>
       <Formik
-        initialValues={constructor.selectedElement as Element}
+        initialValues={{...constructor.selectedElement} as Element}
         onSubmit={(values) => {
           constructor.editElement(values);
         }}
       >
         {({ handleSubmit, handleChange, values, setFieldValue }) => {
+          const handleInputImage = (e: ChangeEvent<HTMLInputElement>) => {
+            const fileReader = new FileReader();
+            fileReader.onload = () => {
+              if (fileReader.readyState === 2) {
+                setFieldValue("imgSrc", fileReader.result);
+              }
+            };
+            //@ts-ignore
+            fileReader.readAsDataURL(e.target.files[0])
+          }
           return (
             <Form onSubmit={handleSubmit}>
               <Modal.Body id="element-edit-modal-body">
@@ -68,16 +78,13 @@ export const ElementEditModal = observer(() => {
                   id="element-edit-label-image"
                   htmlFor="element-edit-input-image"
                 >
-                  Image in format png
+                  New image in format png
                 </Form.Label>
                 <Form.Control
-                  value={"hmm"}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    //@ts-ignore
-                    setFieldValue("image", e?.currentTarget?.files[0] ?? null);
-                  }}
+                  accept="image/png"
+                  onChange={handleInputImage}
                   type="file"
-                  name="image"
+                  name="imgSrc"
                   id="element-edit-input-image"
                 />
               </Modal.Body>
