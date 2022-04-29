@@ -15,12 +15,6 @@ describe("Test Sandbox component", () => {
       842
     );
   });
-  test("Is border 1px solid black", () => {
-    expect(wrapper.find("#sandbox").props().style).toHaveProperty(
-      "border",
-      "1px solid black"
-    );
-  });
   test("Is box-shadow 0 0 10px rgba(0,0,0,0.5)", () => {
     expect(wrapper.find("#sandbox").props().style).toHaveProperty(
       "boxShadow",

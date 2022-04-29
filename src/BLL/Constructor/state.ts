@@ -18,8 +18,8 @@ class Constructor {
       e.id === element.id ? element : e
     );
   };
-  setSelectedElement=(element:Element)=>{
-    this.selectedElement = element
+  setSelectedElementById=(elementId:number)=>{
+    this.selectedElement = this.elements.filter((e) => e.id===elementId)[0]
   }
   resetSelectedElement = () =>{
     this.selectedElement = null

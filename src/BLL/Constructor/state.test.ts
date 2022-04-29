@@ -20,11 +20,11 @@ describe("Test Constructor state", () => {
     expect(constructor.elements[0].text).toBe("New text");
   });
   test("Is setSelectedElement set selectedElement element", () => {
-    constructor.setSelectedElement(element);
+    constructor.setSelectedElementById(element.id);
     expect(constructor.selectedElement).toStrictEqual(element);
   });
   test("Is resetSelectedElement set selectedElement null", () => {
-    constructor.setSelectedElement(element);
+    constructor.setSelectedElementById(element.id);
     constructor.resetSelectedElement();
     expect(constructor.selectedElement).toEqual(null);
   });
