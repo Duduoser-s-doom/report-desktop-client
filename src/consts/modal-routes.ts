@@ -1,4 +1,5 @@
 export enum ModalRoutes {
-    reportsEdit =  "reportsEdit",
-    reportsInsert = "reportsInsert"
+  reportsEdit = "reportsEdit",
+  elementEdit = "elementEdit",
+  reportsInsert = "reportsInsert",
 }

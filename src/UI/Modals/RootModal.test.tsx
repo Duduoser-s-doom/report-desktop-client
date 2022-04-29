@@ -12,4 +12,7 @@ describe("Test RootModal component", () => {
   test("Is modal for ReportsEdit exist", () => {
     expect(!!wrapper.find("#reports-edit")).toBe(true);
   });
+  test("Is modal for ElementEdit exist", () => {
+    expect(!!wrapper.find("#element-edit")).toBe(true);
+  });
 });

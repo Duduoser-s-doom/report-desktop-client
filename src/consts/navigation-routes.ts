@@ -1,5 +1,5 @@
 export enum NavigationRoutes {
-    home = "/home",
-    reports = "/reports",
-    constructor = "/constructor"
+  home = "/home",
+  reports = "/reports",
+  constructor = "/constructor",
 }
