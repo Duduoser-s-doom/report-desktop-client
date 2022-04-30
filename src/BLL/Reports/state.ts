@@ -1,9 +1,21 @@
 import { makeAutoObservable } from "mobx";
 import { read } from "xlsx";
-import { Report, ReportChangeModel, ReportRaw } from "../../types";
+import {
+  Report,
+  ReportChangeModel,
+  ReportRaw,
+  Element,
+  PdfFile,
+} from "../../types";
 import { excelToReportsRaw, generatePDFByReports } from "../../utils";
 import Zip from "jszip";
-import { deleteReports, getReports, setReports } from "../../DAL";
+import {
+  deleteReports,
+  getReports,
+  setReports,
+  createReports,
+} from "../../DAL";
+import { create } from "domain";
 
 class Reports {
   searchText = "";
@@ -16,7 +28,7 @@ class Reports {
     fromSearch: [] as Report[],
     raw: [] as ReportRaw[],
     excel: null as File | null,
-    pdf: [] as any,
+    pdf: [] as PdfFile[],
     zip: null as any,
   };
   constructor() {
@@ -29,7 +41,10 @@ class Reports {
     this.isFetching = false;
     this.fetchReports();
   };
-  changeAndSaveReports = async (reportChanges: ReportChangeModel) => {
+  changeAndSaveReports = async (
+    reportChanges: ReportChangeModel,
+    elements: Element[]
+  ) => {
     this.isFetching = true;
     Object.keys(reportChanges).forEach((r: string) =>
       this.reports.selected.forEach(
@@ -41,7 +56,8 @@ class Reports {
     );
     const pdfFiles = await generatePDFByReports(
       this.reports.selected,
-      this.group
+      this.group,
+      elements
     );
     this.reports.selected.forEach((s, index) => (s.pdf = pdfFiles[index]));
     await setReports(this.reports.selected);
@@ -85,12 +101,13 @@ class Reports {
     this.reports.raw = excelToReportsRaw(workbook);
     this.isFetching = false;
   };
-  generatePDFAndZipFiles = async () => {
+  generatePDFAndZipFiles = async (elements: Element[]) => {
     let zip = new Zip();
     const folder = zip.folder("Reports");
     const pdfFiles = await generatePDFByReports(
       this.reports.raw,
       this.group,
+      elements,
       (name, base64) => folder?.file(name, base64, { base64: true })
     );
     try {
@@ -100,6 +117,17 @@ class Reports {
     } catch (e) {
       console.log(e);
     }
+  };
+  saveReportsInServer = async () => {
+    this.isFetching = true;
+    await createReports(
+      this.reports.raw.map((r, index) => ({
+        ...r,
+        pdf: this.reports.pdf[index],
+        group: this.group,
+      }))
+    );
+    this.isFetching = false;
   };
   resetDates = (): void => {
     this.searchText = "";

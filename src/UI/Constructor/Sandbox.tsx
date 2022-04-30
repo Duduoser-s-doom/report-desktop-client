@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, DragEvent } from "react";
 import { Container } from "react-bootstrap";
 import { constructor } from "../../BLL/Constructor";
 import { Element } from "../../types";
@@ -31,10 +31,11 @@ export const Sandbox = observer(() => {
       left: offsetX,
       top: offsetY,
       imgSrc: null,
-      text: "New text",
+      text: "",
       fontSize: 16,
       id,
     });
+    constructor.setSelectedElementById(id)
   };
 
   return (

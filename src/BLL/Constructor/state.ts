@@ -1,8 +1,9 @@
 import { makeAutoObservable } from "mobx";
 import { Element } from "../../types";
+import { defaultElements } from "./defaultElements";
 
 class Constructor {
-  elements = [] as Element[];
+  elements = [...defaultElements] as Element[];
   selectedElement = null as null | Element
   constructor() {
     makeAutoObservable(this);

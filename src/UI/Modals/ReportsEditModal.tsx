@@ -5,6 +5,7 @@ import { modal } from "../../BLL/Modal";
 import { reports } from "../../BLL/Reports";
 import { ModalRoutes } from "../../consts/modal-routes";
 import { ReportChangeModel } from "../../types";
+import { constructor } from "../../BLL/Constructor";
 
 export const ReportsEditModal = observer(() => {
   return (
@@ -26,7 +27,7 @@ export const ReportsEditModal = observer(() => {
             }
             return acc;
           }, {} as ReportChangeModel);
-          await reports.changeAndSaveReports(changeModel);
+          await reports.changeAndSaveReports(changeModel, constructor.elements);
           modal.hide()
         }}
         validate={(values) => {}}

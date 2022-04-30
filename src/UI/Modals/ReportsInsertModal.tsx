@@ -5,8 +5,11 @@ import { modal } from "../../BLL/Modal";
 import { reports } from "../../BLL/Reports";
 import { ModalRoutes } from "../../consts/modal-routes";
 import {saveAs} from "file-saver"
+import { constructor } from "../../BLL/Constructor";
 
 export const ReportsInsertModal = observer(() => {
+  console.log(reports.reports.pdf);
+  
   const handleChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       if (e.target && e.target.files) {
@@ -15,10 +18,13 @@ export const ReportsInsertModal = observer(() => {
     } catch (e) {}
   };
   const handleToPDFButton = () =>{
-    reports.generatePDFAndZipFiles()
+    reports.generatePDFAndZipFiles(constructor.elements)
   }
   const handleDownloadButton = () =>{
     saveAs(reports.reports.zip,"Reports")
+  }
+  const handleSaveButton = () =>{
+    reports.saveReportsInServer()
   }
   const tryHandleChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     //@ts-ignore
@@ -28,7 +34,7 @@ export const ReportsInsertModal = observer(() => {
     reports.setGroup(e.target.value);
   };
   const isToPDFBtnDisabled = useMemo(
-    () => !(reports.reports.raw && !reports.isFetching && reports.group),
+    () => !(reports.reports.raw.length>0 && !reports.isFetching && reports.group),
     [reports.isFetching, reports.group, reports.reports.raw]
   );
   const isDownloadBtnDisabled = useMemo(
@@ -36,7 +42,7 @@ export const ReportsInsertModal = observer(() => {
     [reports.reports.zip, reports.isFetching]
   );
   const isSaveBtnDisabled = useMemo(
-    () => !(reports.reports.pdf && reports.reports.raw && !reports.isFetching),
+    () => !(reports.reports.pdf.length>0 && reports.reports.raw.length>0 && !reports.isFetching),
     [reports.reports.pdf, reports.reports.raw, reports.isFetching]
   );
 
@@ -100,6 +106,7 @@ export const ReportsInsertModal = observer(() => {
             Download
           </Button>
           <Button
+            onClick={handleSaveButton}
             disabled={isSaveBtnDisabled}
             variant="outline-success"
             id="report-insert-modal-footer-btn-save"

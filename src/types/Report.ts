@@ -21,6 +21,7 @@ export type ReportCreateModel = {
   points: number;
   githubURL: string;
   pdf: PdfFile;
+  group: string;
 };
 
 export type ReportChangeModel = {
@@ -29,9 +30,9 @@ export type ReportChangeModel = {
   name?: string;
   points?: number;
   githubURL?: string;
-}
+};
 
-type PdfFile = {
+export type PdfFile = {
   name: string;
   base64: string;
 };

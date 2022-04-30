@@ -16,9 +16,9 @@ export const getReports = async (
 };
 
 export const createReports = (
-  reports: ReportCreateModel[],
-  group: string
-) => {};
+  reports: ReportCreateModel[]
+) => {
+};
 
 export const setReports = async (reports: Report[]) => {};
 
