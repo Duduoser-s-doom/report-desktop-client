@@ -21,7 +21,7 @@ export const ReportsInsertModal = observer(() => {
     reports.generatePDFAndZipFiles(constructor.elements)
   }
   const handleDownloadButton = () =>{
-    saveAs(reports.reports.zip,"Reports")
+    saveAs(reports.reports.zip,"Reports.zip")
   }
   const handleSaveButton = () =>{
     reports.saveReportsInServer()

@@ -1,5 +1,6 @@
 import jsPDF from "jspdf";
 import { Element, ReportRaw } from "../types";
+import { getWidthAndHeightText } from "./getWidthAndHeightText";
 import { parseText } from "./parseText";
 
 export const generatePDFByReports = async (
@@ -16,17 +17,17 @@ export const generatePDFByReports = async (
         let dataURL = e.imgSrc 
         if(!dataURL){
           const parsedText = parseText(e.text,{...r, group})
+          const {width, height} = getWidthAndHeightText(parsedText,"Times New Roman",`${e.fontSize}px`)
           let canvas = document.createElement("canvas")
+          canvas.height = height
+          canvas.width = width
+          document.body.appendChild(canvas)
           let ctx = canvas.getContext('2d')
           //@ts-ignore
-          ctx.font = `${e.fontSize}px Times New Roman`
-          const metrix = ctx?.measureText(e.text) as TextMetrics;
-          canvas.width = metrix.width
-          const height = metrix.actualBoundingBoxAscent+metrix.actualBoundingBoxDescent
-          canvas.height = height
-          ctx?.fillText(parsedText, 0, height)
+          ctx.font = `${e.fontSize}px Times New Roman` 
+          ctx?.fillText(parsedText, 0, height-e.fontSize/4)
           dataURL = canvas.toDataURL("image/png")
-          console.log(dataURL);
+          canvas.remove()
         }
         const {width,height} = doc.getImageProperties(dataURL);
         doc.addImage(dataURL, "png",e.left,e.top,width,height)

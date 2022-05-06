@@ -1,9 +1,7 @@
 import { observer } from "mobx-react";
 import {
   ChangeEvent,
-  DetailedHTMLProps,
   DragEvent,
-  HTMLAttributes,
   useCallback,
   useState,
 } from "react";
@@ -53,7 +51,6 @@ export const ElementCard = observer(
         top: e.pageY - e.currentTarget.offsetParent.offsetTop,
         fontSize,
       });
-      console.log(e);
     };
 
     return (

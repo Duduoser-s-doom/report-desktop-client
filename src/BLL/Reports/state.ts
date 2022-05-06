@@ -15,8 +15,8 @@ import {
   setReports,
   createReports,
 } from "../../DAL";
-import { create } from "domain";
 
+global.Buffer = global.Buffer || require('buffer').Buffer;
 class Reports {
   searchText = "";
   group = "";
@@ -108,10 +108,14 @@ class Reports {
       this.reports.raw,
       this.group,
       elements,
-      (name, base64) => folder?.file(name, base64, { base64: true })
+      (name, base64) => folder?.file(name, base64,{base64:true})
     );
+    console.log(folder, zip);
+    
     try {
-      const zipFile = await zip?.generateAsync({ type: "blob" });
+      const zipFile = await zip?.generateAsync({ type: "nodebuffer" });
+      console.log(zipFile);
+      
       this.reports.pdf = pdfFiles;
       this.reports.zip = zipFile;
     } catch (e) {
