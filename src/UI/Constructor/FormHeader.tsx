@@ -4,6 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { constructor } from "../../BLL/Constructor";
 import { modal } from "../../BLL/Modal";
 import { ModalRoutes } from "../../consts";
+import { saveNewElements } from "../../renderer";
 
 export const FormHeader = observer(() => {
   const isDisabled = useMemo(
@@ -39,7 +40,7 @@ export const FormHeader = observer(() => {
     modal.show(ModalRoutes.elementEdit);
   };
   const handleSaveBtn = () => {
-    constructor.saveElements()
+    saveNewElements(constructor.elements)
   }
   return (
     <Form id="form-header" className="d-flex justify-content-end w-100">

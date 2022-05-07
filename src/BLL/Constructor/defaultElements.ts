@@ -1,5 +1,3 @@
-import { Element } from "../../types";
-
 export const defaultElements = [
   {
     fontSize: 16,
@@ -58,4 +56,4 @@ export const defaultElements = [
     text: "{githubURL}",
     top: 273,
   },
-] as Element[];
+];

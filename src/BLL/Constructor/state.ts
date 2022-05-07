@@ -1,7 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { Element } from "../../types";
 import { defaultElements } from "./defaultElements";
-import storage from "electron-json-storage";
 
 class Constructor {
   elements = [] as Element[];
@@ -9,14 +8,8 @@ class Constructor {
   constructor() {
     makeAutoObservable(this);
   }
-  fetchElements = () => {
-    storage.get("elements", (json) => {
-      console.log(json.elements);
-      this.elements = json.elements ?? defaultElements;
-    });
-  };
-  saveElements = () => {
-    storage.set("elements", { elements: this.elements }, () => {});
+  setElements = (elements?: Element[]) => {
+    this.elements = elements ?? defaultElements;
   };
   addElement = (element: Element) => {
     this.elements.push(element);
