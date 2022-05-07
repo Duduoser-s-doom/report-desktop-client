@@ -38,6 +38,9 @@ export const FormHeader = observer(() => {
   const handleEditBtn = () => {
     modal.show(ModalRoutes.elementEdit);
   };
+  const handleSaveBtn = () => {
+    constructor.saveElements()
+  }
   return (
     <Form id="form-header" className="d-flex justify-content-end w-100">
       <Form.Control
@@ -48,6 +51,13 @@ export const FormHeader = observer(() => {
         id="btn-attach"
         type="file"
       />
+      <Button 
+      onClick={handleSaveBtn}
+      variant="outline-success"
+      id="btn-save"
+      className="me-2">
+        Save
+      </Button>
       <Button
         className="me-2"
         disabled={isDisabled}
