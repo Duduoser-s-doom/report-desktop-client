@@ -1,5 +1,5 @@
-import { ipcRenderer } from "electron";
 import { Element } from "./types";
+const {ipcRenderer} = window.require("electron")
 
 export const fetchSavedElements = () => {
   ipcRenderer.send("FETCH_ELEMENTS", "elements");

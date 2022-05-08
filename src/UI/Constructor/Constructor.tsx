@@ -1,4 +1,3 @@
-import { ipcRenderer } from "electron";
 import { observer } from "mobx-react";
 import { useCallback, useEffect } from "react";
 import { Container } from "react-bootstrap";
@@ -7,8 +6,10 @@ import { constructor } from "../../BLL/Constructor";
 import { fetchSavedElements } from "../../renderer";
 import { FormHeader } from "./FormHeader";
 import { Sandbox } from "./Sandbox";
+const {ipcRenderer} = window.require("electron")
 
 export const Constructor = observer(() => {
+  try{
   const handleFetchElements = useCallback((event: any, data: Element[]) => {
     constructor.setElements(data)
   },
@@ -36,7 +37,10 @@ export const Constructor = observer(() => {
         handleSaveElements
       );
     };
-  }, []);
+  }, []);}catch(e){
+    console.log(e);
+    
+  }
   return (
     <Container className="mt-3">
       <FormHeader />

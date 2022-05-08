@@ -51,9 +51,7 @@ export const Sandbox = observer(() => {
       }}
       className="mt-3 mb-3"
     >
-      {constructor.elements.map((e) => (
-        <ElementCard {...e} />
-      ))}
+      
     </Container>
   );
 });

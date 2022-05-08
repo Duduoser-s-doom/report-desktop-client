@@ -1,6 +1,6 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
-const storage = require("electron-json-storage");
+const storage = require("electron-json-storage")
 const isDev = require("electron-is-dev");
 
 require("@electron/remote/main").initialize();
@@ -13,6 +13,7 @@ function createWindow() {
     webPreferences: {
       enableRemoteModule: true,
       nodeIntegration: true,
+      contextIsolation: false,
     },
   });
   win.loadURL(
