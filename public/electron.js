@@ -1,6 +1,6 @@
 const path = require("path");
 const { app, BrowserWindow, ipcMain } = require("electron");
-const storage = require("electron-json-storage")
+const storage = require("electron-json-storage");
 const isDev = require("electron-is-dev");
 
 require("@electron/remote/main").initialize();
@@ -43,23 +43,24 @@ app.on("activate", () => {
 
 const key = "elements";
 ipcMain.on("FETCH_ELEMENTS", (event, message) => {
-  storage.get(key, (error, data) => {
-    if (data.elements && data.elements.length > 0) {
+  storage.get(key, async (error, data) => {
+    if (error) {
       win.send("HANDLE_FETCH_ELEMENTS", {
-        success: true,
-        message: data.elements,
+        success: false,
+        message: null,
       });
     } else {
       win.send("HANDLE_FETCH_ELEMENTS", {
-        success: false,
-        message: [],
+        success: true,
+        message: Array.isArray(data.elements) ? data.elements : null,
       });
     }
   });
 });
 
-ipcMain.on("SAVE_ELEMENTS", (event, message) => {
-  storage.set(key, { elements: message }, (error, data) => {
+ipcMain.on("SAVE_ELEMENTS", async (event, message) => {
+  const elements = await JSON.parse(message)
+  storage.set(key, { elements }, (error, data) => {
     if (error) {
       win.send("HANDLE_SAVE_ELEMENTS", {
         success: false,

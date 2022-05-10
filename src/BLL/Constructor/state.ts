@@ -3,12 +3,19 @@ import { Element } from "../../types";
 import { defaultElements } from "./defaultElements";
 
 class Constructor {
+  isStorageSync = false;
   elements = [] as Element[];
   selectedElement = null as null | Element;
   constructor() {
     makeAutoObservable(this);
   }
-  setElements = (elements?: Element[]) => {
+  finishStorageSync = () => {
+    this.isStorageSync = false;
+  };
+  startStorageSync = () => {
+    this.isStorageSync = true;
+  };
+  setElements = (elements: Element[] | null) => {
     this.elements = elements ?? defaultElements;
   };
   addElement = (element: Element) => {
@@ -29,6 +36,7 @@ class Constructor {
     this.selectedElement = null;
   };
   resetDates = () => {
+    this.isStorageSync = false;
     this.elements = [];
     this.selectedElement = null;
   };

@@ -40,8 +40,9 @@ export const FormHeader = observer(() => {
     modal.show(ModalRoutes.elementEdit);
   };
   const handleSaveBtn = () => {
-    saveNewElements(constructor.elements)
-  }
+    constructor.startStorageSync()
+    saveNewElements(constructor.elements);
+  };
   return (
     <Form id="form-header" className="d-flex justify-content-end w-100">
       <Form.Control
@@ -52,11 +53,13 @@ export const FormHeader = observer(() => {
         id="btn-attach"
         type="file"
       />
-      <Button 
-      onClick={handleSaveBtn}
-      variant="outline-success"
-      id="btn-save"
-      className="me-2">
+      <Button
+        disabled={constructor.isStorageSync}
+        onClick={handleSaveBtn}
+        variant="outline-success"
+        id="btn-save"
+        className="me-2"
+      >
         Save
       </Button>
       <Button

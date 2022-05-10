@@ -28,4 +28,12 @@ describe("Test Constructor state", () => {
     constructor.resetSelectedElement();
     expect(constructor.selectedElement).toEqual(null);
   });
+  test("Is startStorageSync set isStorageSync true", () => {
+    constructor.startStorageSync()
+    expect(constructor.isStorageSync).toBe(true)
+  })
+  test("Is finishStorageSync set isStorageSync false", () => {
+    constructor.finishStorageSync()
+    expect(constructor.isStorageSync).toBe(false)
+  })
 });
