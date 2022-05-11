@@ -6,10 +6,9 @@ import { reports } from "../../BLL/Reports";
 import { ModalRoutes } from "../../consts/modal-routes";
 import {saveAs} from "file-saver"
 import { constructor } from "../../BLL/Constructor";
+import { base64ToBlob } from "../../utils";
 
 export const ReportsInsertModal = observer(() => {
-  console.log(reports.reports.pdf);
-  
   const handleChangeFileInput = async (e: ChangeEvent<HTMLInputElement>) => {
     try {
       if (e.target && e.target.files) {

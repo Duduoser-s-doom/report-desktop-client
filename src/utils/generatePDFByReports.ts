@@ -36,7 +36,7 @@ export const generatePDFByReports = async (
       reader.readAsDataURL(doc.output("blob"));
       reader.onload = async () => {
         const base64 = (reader.result as string).split(",")[1];
-        const name = `Report-${group}-${r.name}${r.labNumber}.pdf`;
+        const name = `report-${group}-${r.name}${r.labNumber}.pdf`;
         pdfFiles.push({ name, base64 });
         if (callback) callback(name, base64);      
       };

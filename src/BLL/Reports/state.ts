@@ -16,7 +16,7 @@ import {
   createReports,
 } from "../../DAL";
 
-global.Buffer = global.Buffer || require('buffer').Buffer;
+global.Buffer = global.Buffer || require("buffer").Buffer;
 class Reports {
   searchText = "";
   group = "";
@@ -101,26 +101,32 @@ class Reports {
     this.reports.raw = excelToReportsRaw(workbook);
     this.isFetching = false;
   };
-  generatePDFAndZipFiles = async (elements: Element[]) => {
+  generatePDFAndZipFiles = (elements: Element[]) => {
+    this.isFetching = true
     let zip = new Zip();
-    const folder = zip.folder("Reports");
-    const pdfFiles = await generatePDFByReports(
+    generatePDFByReports(
       this.reports.raw,
       this.group,
       elements,
-      (name, base64) => folder?.file(name, base64,{base64:true})
-    );
-    console.log(folder, zip);
-    
-    try {
-      const zipFile = await zip?.generateAsync({ type: "nodebuffer" });
-      console.log(zipFile);
-      
-      this.reports.pdf = pdfFiles;
-      this.reports.zip = zipFile;
-    } catch (e) {
-      console.log(e);
-    }
+      (name, base64) =>
+        zip?.file(name, base64, {
+          base64: true,
+        })
+    ).then((pdfFiles) => {
+      setTimeout(
+        () =>
+          zip
+            ?.generateAsync({
+              type: "blob",
+            })
+            .then((zipFile) => {
+              this.reports.pdf = pdfFiles;
+              this.reports.zip = zipFile;
+              this.isFetching = false
+            }),
+        this.reports.raw.length * 1000
+      );
+    });
   };
   saveReportsInServer = async () => {
     this.isFetching = true;
