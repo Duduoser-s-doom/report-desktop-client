@@ -9,31 +9,65 @@ class Home {
   constructor() {
     makeAutoObservable(this);
   }
+  refresh = () => {
+    const countRefresh = Math.ceil((Math.random() + 1) * 50);
+    for (let i = 0; i < countRefresh; i++) {
+      const zeroPos = this.getPosById(0);
+      let ablePos = this.getAblePosByPos(zeroPos);
+      const randomPos =
+        ablePos[Math.round((ablePos.length - 1) * Math.random())];
+      this.board[zeroPos.rowPos][zeroPos.colPos] =
+        this.board[randomPos.rowPos][randomPos.colPos];
+      this.board[randomPos.rowPos][randomPos.colPos] = 0;
+    }
+  };
   setPlaceById = (placeId: number) => {
-    let zeroColPos = 0;
-    let zeroRowPos = 0;
-    let movedColPos = 0;
-    let movedRowPos = 0;
+    const zeroPos = this.getPosById(0);
+    const movedPos = this.getPosById(placeId);
+    if (
+      (zeroPos.colPos === movedPos.colPos &&
+        Math.abs(zeroPos.rowPos - movedPos.rowPos) === 1) ||
+      (zeroPos.rowPos === movedPos.rowPos &&
+        Math.abs(zeroPos.colPos - movedPos.colPos))
+    ) {
+      this.board[zeroPos.rowPos][zeroPos.colPos] = placeId;
+      this.board[movedPos.rowPos][movedPos.colPos] = 0;
+    }
+  };
+  getPosById = (placeId: number) => {
+    let colPos = 0;
+    let rowPos = 0;
     this.board.forEach((row, rowPosition) => {
       row.forEach((elementId, colPosition) => {
-        if (0 === elementId) {
-          zeroColPos = colPosition;
-          zeroRowPos = rowPosition;
-        }
         if (placeId === elementId) {
-          movedColPos = colPosition;
-          movedRowPos = rowPosition;
+          colPos = colPosition;
+          rowPos = rowPosition;
         }
       });
     });
-    if (
-      (zeroColPos === movedColPos &&
-        Math.abs(zeroRowPos - movedRowPos) === 1) ||
-      (zeroRowPos === movedRowPos && Math.abs(zeroColPos - movedColPos))
-    ) {
-      this.board[zeroRowPos][zeroColPos] = placeId;
-      this.board[movedRowPos][movedColPos] = 0;
+    return { colPos, rowPos };
+  };
+  getAblePosByPos = ({
+    colPos,
+    rowPos,
+  }: {
+    colPos: number;
+    rowPos: number;
+  }) => {
+    let ablePos = [];
+    if (colPos - 1 > 0) {
+      ablePos.push({ rowPos, colPos: colPos - 1 });
     }
+    if (colPos + 1 < 2) {
+      ablePos.push({ rowPos, colPos: colPos + 1 });
+    }
+    if (rowPos - 1 > 0) {
+      ablePos.push({ colPos, rowPos: rowPos - 1 });
+    }
+    if (rowPos + 1 < 2) {
+      ablePos.push({ colPos, rowPos: rowPos + 1 });
+    }
+    return ablePos;
   };
   resetDates = () => {
     this.board = [
