@@ -11,14 +11,17 @@ class Home {
   }
   refresh = () => {
     const countRefresh = Math.ceil((Math.random() + 1) * 50);
+    let zeroPos = this.getPosById(0)
     for (let i = 0; i < countRefresh; i++) {
-      const zeroPos = this.getPosById(0);
       let ablePos = this.getAblePosByPos(zeroPos);
+      console.log(ablePos,zeroPos);
+      
       const randomPos =
         ablePos[Math.round((ablePos.length - 1) * Math.random())];
       this.board[zeroPos.rowPos][zeroPos.colPos] =
         this.board[randomPos.rowPos][randomPos.colPos];
       this.board[randomPos.rowPos][randomPos.colPos] = 0;
+      zeroPos = {...randomPos}
     }
   };
   setPlaceById = (placeId: number) => {
@@ -55,16 +58,16 @@ class Home {
     rowPos: number;
   }) => {
     let ablePos = [];
-    if (colPos - 1 > 0) {
+    if (colPos - 1 >= 0) {
       ablePos.push({ rowPos, colPos: colPos - 1 });
     }
-    if (colPos + 1 < 2) {
+    if (colPos + 1 <= 2) {
       ablePos.push({ rowPos, colPos: colPos + 1 });
     }
-    if (rowPos - 1 > 0) {
+    if (rowPos - 1 >= 0) {
       ablePos.push({ colPos, rowPos: rowPos - 1 });
     }
-    if (rowPos + 1 < 2) {
+    if (rowPos + 1 <= 2) {
       ablePos.push({ colPos, rowPos: rowPos + 1 });
     }
     return ablePos;
