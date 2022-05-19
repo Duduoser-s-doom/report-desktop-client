@@ -7,15 +7,20 @@ describe("Test Reports state", () => {
   beforeEach(() => {
     reports.resetDates();
   });
-  test("Is searchText changes", () => {
+  test("Is searchName changes", () => {
     const text = "reports";
-    reports.setSearchText(text);
-    expect(reports.searchText).toBe(text);
+    reports.setSearchName(text);
+    expect(reports.search.name).toBe(text);
+  });
+  test("Is searchGroup changes", () => {
+    const text = "R3180";
+    reports.setSearchGroup(text);
+    expect(reports.search.group);
   });
   test("Is dates reset", () => {
-    reports.setSearchText("reports");
+    reports.setSearchGroup("reports");
     reports.resetDates();
-    expect(reports.searchText).toBe("");
+    expect(reports.search.group).toBe("");
   });
   test("Is group changes", () => {
     const group = "R3180";
@@ -60,12 +65,12 @@ describe("Test Reports state", () => {
       zip: null,
     });
   });
-  test("Is setSelectedReports work correct", ()=>{
-    reports.setSelectedReports([report])
-    expect(reports.reports.selected).toStrictEqual([report])
-  })
-  test("Is setPage work correct", ()=>{
-    reports.setPage(2)
-    expect(reports.page).toBe(2)
-  })
+  test("Is setSelectedReports work correct", () => {
+    reports.setSelectedReports([report]);
+    expect(reports.reports.selected).toStrictEqual([report]);
+  });
+  test("Is setPage work correct", () => {
+    reports.setPage(2);
+    expect(reports.page).toBe(2);
+  });
 });

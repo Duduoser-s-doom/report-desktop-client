@@ -2,9 +2,9 @@ import { shallow } from "enzyme";
 import { PlayCard } from "./PlayCard";
 
 describe("Test PlayCard component", () => {
-  let wrapper = shallow(<PlayCard isDraggable={true} placeId={1} imgSrc={"src"} />);
+  let wrapper = shallow(<PlayCard placeId={1} imgSrc={"src"} />);
   beforeEach(() => {
-    wrapper = shallow(<PlayCard isDraggable={true} placeId={1} imgSrc={"src"}  />);
+    wrapper = shallow(<PlayCard placeId={1} imgSrc={"src"}  />);
   });
   test("Is width equal to 167", () => {
     expect(wrapper.find(`#play-card1`).props().style).toHaveProperty(

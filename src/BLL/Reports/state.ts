@@ -10,15 +10,15 @@ import {
 import { excelToReportsRaw, generatePDFByReports } from "../../utils";
 import Zip from "jszip";
 import {
-  deleteReports,
-  getReports,
-  setReports,
   createReports,
+  deleteReports,
+  retrieveReports,
+  updateReports,
 } from "../../DAL";
 
 global.Buffer = global.Buffer || require("buffer").Buffer;
 class Reports {
-  searchText = "";
+  search = { group: "", name: "" };
   group = "";
   isFetchingReports = false;
   isFetching = false;
@@ -31,12 +31,13 @@ class Reports {
     pdf: [] as PdfFile[],
     zip: null as any,
   };
+  countReports = 0;
   constructor() {
     makeAutoObservable(this);
   }
   deleteAndFetchReports = async () => {
     this.isFetching = true;
-    await deleteReports(reports.reports.selected.map((r) => r.reportId));
+    await deleteReports(reports.reports.selected);
     this.setSelectedReports([]);
     this.isFetching = false;
     this.fetchReports();
@@ -47,39 +48,50 @@ class Reports {
   ) => {
     this.isFetching = true;
     Object.keys(reportChanges).forEach((r: string) =>
-      this.reports.selected.forEach(
-        (s: Report) =>
-          //@ts-ignore
-          (s[r as keyof ReportChangeModel] =
-            reportChanges[r as keyof ReportChangeModel])
-      )
+      this.reports.selected.forEach((s: Report) => {
+        //@ts-ignore
+        s[r as keyof ReportChangeModel] =
+          reportChanges[r as keyof ReportChangeModel];
+      })
     );
-    const pdfFiles = await generatePDFByReports(
-      this.reports.selected,
-      this.group,
-      elements
-    );
-    this.reports.selected.forEach((s, index) => (s.pdf = pdfFiles[index]));
-    await setReports(this.reports.selected);
-    this.setSelectedReports([]);
-    this.isFetching = false;
-    this.fetchReports();
+    this.reports.selected.forEach(async (r: Report, index) => {
+      await generatePDFByReports([r], r.group, elements).then((pdf) => {
+        setTimeout(async () => {
+          console.log(pdf[0]);
+          r.pdf = pdf[0];
+          if (index === this.reports.selected.length - 1) {
+            await updateReports(this.reports.selected);
+            this.setSelectedReports([]);
+            this.isFetching = false;
+            this.fetchReports();
+          }
+        }, 1000);
+      });
+    });
   };
   fetchReports = async () => {
-    this.isFetchingReports = true;
-    const reports = await getReports(
-      this.searchText,
-      this.searchText,
-      this.page
-    );
-    this.reports.fromSearch = reports;
-    this.isFetchingReports = false;
+    try {
+      this.isFetchingReports = true;
+      const data = await retrieveReports(
+        this.search.group,
+        this.search.name,
+        this.page
+      );
+      this.reports.fromSearch = data.reports;
+      this.countReports = data.count;
+      this.isFetchingReports = false;
+    } catch (e) {
+      console.log(e);
+    }
   };
   setPage = (page: number) => {
     this.page = page;
   };
-  setSearchText = (text: string): void => {
-    this.searchText = text;
+  setSearchGroup = (text: string): void => {
+    this.search.group = text;
+  };
+  setSearchName = (text: string): void => {
+    this.search.name = text;
   };
   setGroup = (group: string): void => {
     this.group = group;
@@ -102,7 +114,7 @@ class Reports {
     this.isFetching = false;
   };
   generatePDFAndZipFiles = (elements: Element[]) => {
-    this.isFetching = true
+    this.isFetching = true;
     let zip = new Zip();
     generatePDFByReports(
       this.reports.raw,
@@ -122,7 +134,7 @@ class Reports {
             .then((zipFile) => {
               this.reports.pdf = pdfFiles;
               this.reports.zip = zipFile;
-              this.isFetching = false
+              this.isFetching = false;
             }),
         this.reports.raw.length * 1000
       );
@@ -138,9 +150,10 @@ class Reports {
       }))
     );
     this.isFetching = false;
+    this.fetchReports();
   };
   resetDates = (): void => {
-    this.searchText = "";
+    this.search = { group: "", name: "" };
     this.group = "";
     this.reports = {
       selected: [],

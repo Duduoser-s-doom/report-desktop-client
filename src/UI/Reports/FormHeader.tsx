@@ -1,5 +1,5 @@
-import { Form, FormControl, Button } from "react-bootstrap";
-import { ChangeEvent, useCallback, useEffect, useMemo } from "react";
+import { Form, FormControl, Button, FormLabel } from "react-bootstrap";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react";
 import { reports } from "../../BLL/Reports";
 import { modal } from "../../BLL/Modal";
@@ -10,11 +10,24 @@ export const FormHeader = observer(() => {
     reports.fetchReports();
   }, [reports.page]);
 
+  const [modeInput, setModeInput] = useState<"Group" | "Name">("Group");
+  const handleChangeModeInput = useCallback(() => {
+    if (modeInput === "Group") {
+      setModeInput("Name");
+    } else {
+      setModeInput("Group");
+    }
+  }, [modeInput]);
   const handleTextInputChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      reports.setSearchText(e.currentTarget.value);
+      const text = e.currentTarget.value;
+      if (modeInput === "Group") {
+        reports.setSearchGroup(text);
+      } else {
+        reports.setSearchName(text);
+      }
     },
-    []
+    [modeInput]
   );
   const handleSubmit = useCallback(() => {
     reports.fetchReports();
@@ -33,15 +46,26 @@ export const FormHeader = observer(() => {
     () => !(reports.reports.selected.length > 0) || reports.isFetching,
     [reports.reports.selected, reports.isFetching]
   );
+
   return (
     <Form
       onSubmit={handleSubmit}
       id="form-reports"
       className="d-flex justify-content-end w-100"
     >
+      <Button
+        onClick={handleChangeModeInput}
+        variant="outline-warning"
+        id="btn-search"
+        className="me-2"
+      >
+        {modeInput}
+      </Button>
       <FormControl
         onChange={handleTextInputChange}
-        value={reports.searchText}
+        value={
+          modeInput === "Group" ? reports.search.group : reports.search.name
+        }
         id="input-search"
         type="search"
         placeholder="Search"
@@ -52,7 +76,7 @@ export const FormHeader = observer(() => {
         id="btn-search"
         className="me-2"
         variant="outline-success"
-        type="submit"
+        onClick={handleSubmit}
       >
         Search
       </Button>
@@ -60,7 +84,6 @@ export const FormHeader = observer(() => {
         id="btn-insert"
         className="me-2"
         variant="outline-success"
-        type="button"
         onClick={handleInsertButton}
       >
         Insert

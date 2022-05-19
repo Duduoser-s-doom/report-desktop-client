@@ -8,7 +8,7 @@ type Props = {
 
 export const PlayCard = observer(({ placeId, imgSrc }: Props) => {
   const handleClick = () => {
-    if (placeId === 0) {
+    if (placeId !== 0) {
       home.setPlaceById(placeId);
     }  
   };

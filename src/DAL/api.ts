@@ -1,25 +1,35 @@
 import axios from "axios";
 import { BACKEND_URL } from "../consts";
-import { report } from "../test-data/report";
 import { Report, ReportCreateModel } from "../types";
+axios.defaults.adapter = require("axios/lib/adapters/http"); // always use Node.js adapter
+
 const instance = axios.create({
   baseURL: BACKEND_URL,
 });
 
-export const getReports = async (
+export const retrieveReports = async (
   group: string,
   name: string = "",
   page = 1,
   count = 10
-) => {
-  return (await [report]) as Report[];
+): Promise<{ reports: Report[]; count: number }> => {
+  return (
+    await instance.get(
+      `reports?page=${page}&count=${count}&name=${name}&group=${group}`
+    )
+  ).data;
 };
 
-export const createReports = (
-  reports: ReportCreateModel[]
-) => {
+export const createReports = async (reports: ReportCreateModel[]) => {
+  return (await instance.post(`reports`, { reports })).data;
 };
 
-export const setReports = async (reports: Report[]) => {};
+export const updateReports = async (reports: Report[]) => {
+  return (await instance.put(`reports`, { reports })).data;
+};
 
-export const deleteReports = async (reportsId: string[]) => {};
+export const deleteReports = async (reports: Report[]) => {
+  return await (
+    await instance.delete(`reports`, { data: { reports } })
+  ).data;
+};

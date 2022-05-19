@@ -5,18 +5,24 @@ import { Pagination, UserCard } from "../Bricks";
 export const UserCards = observer(() => {
   return (
     <div id="usercards" className="my-2">
-      <div style={{ height: 500 }}>
+      <div style={{ height: 450, overflowY: "scroll" }}>
         {reports.isFetchingReports
           ? "Loading"
-          : reports.reports.fromSearch.map((r) => <div className="my-2"><UserCard {...r} /></div>)}
+          : reports.reports.fromSearch.map((r) => (
+              <div key={`usercard${r.reportId}`} className="my-2">
+                <UserCard {...r} />
+              </div>
+            ))}
       </div>
-      <div className="d-flex w-100 justify-content-center">
-        {reports.reports.fromSearch.length/10>1 && <Pagination
-          onChangePage={reports.setPage}
-          page={reports.page}
-          count={reports.reports.fromSearch.length}
-          portionSize={10}
-        />}
+      <div className="d-flex w-100 mt-3 justify-content-center">
+        {reports.countReports > 10 && (
+          <Pagination
+            onChangePage={reports.setPage}
+            page={reports.page}
+            count={reports.countReports}
+            portionSize={10}
+          />
+        )}
       </div>
     </div>
   );
