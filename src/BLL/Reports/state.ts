@@ -32,45 +32,59 @@ class Reports {
     zip: null as any,
   };
   countReports = 0;
+  messageError = "";
+  messageErrorFetchReports = ""
   constructor() {
     makeAutoObservable(this);
   }
-  deleteAndFetchReports = async () => {
-    this.isFetching = true;
-    await deleteReports(reports.reports.selected);
-    this.setSelectedReports([]);
-    this.isFetching = false;
-    this.fetchReports();
+  handleAsyncError = async (cb: () => Promise<void>) => {
+    try {
+      this.messageError = "";
+      this.isFetching = true;
+      await cb();
+    } catch (e: any) {
+      this.messageError = e.message;
+    } finally {
+      this.isFetching = false;
+    }
   };
-  changeAndSaveReports = async (
+  deleteAndFetchReports = async () => {
+    await this.handleAsyncError(async () => {
+      await deleteReports(reports.reports.selected);
+      this.setSelectedReports([]);
+      this.fetchReports();
+    });
+  };
+  changeAndSaveReports = (
     reportChanges: ReportChangeModel,
     elements: Element[]
   ) => {
-    this.isFetching = true;
-    Object.keys(reportChanges).forEach((r: string) =>
-      this.reports.selected.forEach((s: Report) => {
-        //@ts-ignore
-        s[r as keyof ReportChangeModel] =
-          reportChanges[r as keyof ReportChangeModel];
-      })
-    );
-    this.reports.selected.forEach(async (r: Report, index) => {
-      await generatePDFByReports([r], r.group, elements).then((pdf) => {
-        setTimeout(async () => {
-          console.log(pdf[0]);
-          r.pdf = pdf[0];
-          if (index === this.reports.selected.length - 1) {
-            await updateReports(this.reports.selected);
-            this.setSelectedReports([]);
-            this.isFetching = false;
-            this.fetchReports();
-          }
-        }, 1000);
+    this.handleAsyncError(async () => {
+      Object.keys(reportChanges).forEach((r: string) =>
+        this.reports.selected.forEach((s: Report) => {
+          //@ts-ignore
+          s[r as keyof ReportChangeModel] =
+            reportChanges[r as keyof ReportChangeModel];
+        })
+      );
+      this.reports.selected.forEach(async (r: Report, index) => {
+        await generatePDFByReports([r], r.group, elements).then((pdf) => {
+          setTimeout(async () => {
+            console.log(pdf[0]);
+            r.pdf = pdf[0];
+            if (index === this.reports.selected.length - 1) {
+              await updateReports(this.reports.selected);
+              this.setSelectedReports([]);
+              this.fetchReports();
+            }
+          }, 1000);
+        });
       });
     });
   };
   fetchReports = async () => {
     try {
+      this.messageErrorFetchReports = ""
       this.isFetchingReports = true;
       const data = await retrieveReports(
         this.search.group,
@@ -79,9 +93,10 @@ class Reports {
       );
       this.reports.fromSearch = data.reports;
       this.countReports = data.count;
+    } catch (e: any) {
+      this.messageErrorFetchReports = e.message 
+    } finally {
       this.isFetchingReports = false;
-    } catch (e) {
-      console.log(e);
     }
   };
   setPage = (page: number) => {
@@ -105,52 +120,52 @@ class Reports {
   setReportsRaw = (reports: ReportRaw[]) => {
     this.reports.raw = reports;
   };
-  setReportsByExcelFile = async (file: File) => {
-    this.isFetching = true;
-    const data = await file.arrayBuffer();
-    const workbook = read(data);
-    this.reports.excel = file;
-    this.reports.raw = excelToReportsRaw(workbook);
-    this.isFetching = false;
+  setReportsByExcelFile = (file: File) => {
+    this.handleAsyncError(async () => {
+      const data = await file.arrayBuffer();
+      const workbook = read(data);
+      this.reports.excel = file;
+      this.reports.raw = excelToReportsRaw(workbook);
+    });
   };
   generatePDFAndZipFiles = (elements: Element[]) => {
-    this.isFetching = true;
-    let zip = new Zip();
-    generatePDFByReports(
-      this.reports.raw,
-      this.group,
-      elements,
-      (name, base64) =>
-        zip?.file(name, base64, {
-          base64: true,
-        })
-    ).then((pdfFiles) => {
-      setTimeout(
-        () =>
-          zip
-            ?.generateAsync({
-              type: "blob",
-            })
-            .then((zipFile) => {
-              this.reports.pdf = pdfFiles;
-              this.reports.zip = zipFile;
-              this.isFetching = false;
-            }),
-        this.reports.raw.length * 1000
-      );
+    this.handleAsyncError(async () => {
+      let zip = new Zip();
+      generatePDFByReports(
+        this.reports.raw,
+        this.group,
+        elements,
+        (name, base64) =>
+          zip?.file(name, base64, {
+            base64: true,
+          })
+      ).then((pdfFiles) => {
+        setTimeout(
+          () =>
+            zip
+              ?.generateAsync({
+                type: "blob",
+              })
+              .then((zipFile) => {
+                this.reports.pdf = pdfFiles;
+                this.reports.zip = zipFile;
+              }),
+          this.reports.raw.length * 1000
+        );
+      });
     });
   };
   saveReportsInServer = async () => {
-    this.isFetching = true;
-    await createReports(
-      this.reports.raw.map((r, index) => ({
-        ...r,
-        pdf: this.reports.pdf[index],
-        group: this.group,
-      }))
-    );
-    this.isFetching = false;
-    this.fetchReports();
+    this.handleAsyncError(async () => {
+      await createReports(
+        this.reports.raw.map((r, index) => ({
+          ...r,
+          pdf: this.reports.pdf[index],
+          group: this.group,
+        }))
+      );
+      this.fetchReports();
+    });
   };
   resetDates = (): void => {
     this.search = { group: "", name: "" };

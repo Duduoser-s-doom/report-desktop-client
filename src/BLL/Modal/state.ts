@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { ModalRoutes } from "../../consts/modal-routes";
+import { ModalRoutes } from "../../consts";
 
 class Modal {
   visible: false | ModalRoutes = false;

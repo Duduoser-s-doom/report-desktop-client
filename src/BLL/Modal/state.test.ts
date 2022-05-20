@@ -1,4 +1,4 @@
-import { ModalRoutes } from "../../consts/modal-routes";
+import { ModalRoutes } from "../../consts";
 import { modal } from "./state";
 
 describe("Test Modal state", () => {
