@@ -12,24 +12,37 @@ export const retrieveReports = async (
   name: string = "",
   page = 1,
   count = 10
-): Promise<{ reports: Report[]; count: number }> => {
+) => {
   return (
-    await instance.get(
+    await instance.get<{ reports: Report[]; count: number }>(
       `reports?page=${page}&count=${count}&name=${name}&group=${group}`
     )
   ).data;
 };
 
 export const createReports = async (reports: ReportCreateModel[]) => {
-  return (await instance.post(`reports`, { reports })).data;
+  const {success} = (await instance.post<ResultCode>(`reports`, { reports })).data;
+  handleServerError(success)
 };
 
 export const updateReports = async (reports: Report[]) => {
-  return (await instance.put(`reports`, { reports })).data;
+  const {success} = (await instance.put<ResultCode>(`reports`, { reports })).data;
+  handleServerError(success)
 };
 
 export const deleteReports = async (reports: Report[]) => {
-  return await (
-    await instance.delete(`reports`, { data: { reports } })
+  const {success} =  (
+    await instance.delete<ResultCode>(`reports`, { data: { reports } })
   ).data;
+  handleServerError(success)
 };
+
+export const handleServerError = (success:boolean) => {
+  if(!success){
+    throw new Error("Bad request");
+  }
+}
+
+export type ResultCode = {
+  success: boolean
+}
