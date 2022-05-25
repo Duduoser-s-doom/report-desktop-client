@@ -2,7 +2,7 @@
 
 This project was created with [React](https://reactjs.org) and [Electron](https://www.electronjs.org).
 
-## Steps for get apk
+## Steps for get exe
 
 ### `yarn`
 
