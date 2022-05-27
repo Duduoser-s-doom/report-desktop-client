@@ -8,6 +8,10 @@ This project was created with [React](https://reactjs.org) and [Electron](https:
 
 Install all required packages.
 
+### `yarn build`
+
+This command create prebuild.
+
 ### `yarn electron:build`
 
-This command create .exe, that you can download.
+And it make file for download
