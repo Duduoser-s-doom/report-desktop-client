@@ -110,7 +110,7 @@
     "build": "craco build",
     "test": "craco test",
     "electron:serve": "concurrently -k \"cross-env BROWSER=none yarn start\" \"yarn electron:start\"",
-    "electron:build": "yarn build && electron-builder -c.extraMetadata.main=build/electron.js",
+    "electron:build": "electron-builder -c.extraMetadata.main=build/electron.js",
     "electron:start": "wait-on tcp:3000 && electron ."
   },
   "build": {
